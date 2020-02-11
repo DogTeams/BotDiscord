@@ -21,7 +21,7 @@ module.exports = class Invite extends Command{
             message.channel.send(message.member.nickname + " a rejoint la faille de l'invocateur. " + message.guild.roles.find('name','LoL'))
         }
         if (args[1] === 'r6') {
-            message.channel.send(message.member.nickname + " rejoint l'escouade K.R.P. VIENDEZ ^^ " + message.guild.roles.find('name','LoL'))
+            message.channel.send(message.member.nickname + " rejoint l'escouade K.R.P. VIENDEZ ^^ " + message.guild.roles.find('name','r6'))
         }
         if (args[1] === 'diablo') {
             message.channel.send(message.member.nickname + " demmande aux Nephilim de le rejoindre " + message.guild.roles.find('name','Diablo'))

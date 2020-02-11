@@ -6,6 +6,7 @@ const Play = require('./commands/play')
 const Join = require('./commands/join')
 const Dog = require('./commands/dog')
 const Invite = require('./commands/invite')
+const MHW = require('./commands/mhw')
 
 bot.on('ready',function(){
     bot.user.setGame('Test')
@@ -19,8 +20,7 @@ bot.on('message', function (message){
     Join.parse(message)
     Dog.parse(message)
     Invite.parse(message)
+    MHW.parse(message)
 })
 
 bot.login(process.env.LOGIN)
-//NjQ1MjQ4Njg3Njg1MjM4ODE1.XjCxpQ.s23YgPbfuenVpJsX0BC4R0iMreE
-//process.env.BOT_TOKEN
