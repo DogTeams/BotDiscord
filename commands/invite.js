@@ -13,7 +13,6 @@ module.exports = class Invite extends Command{
         if (args[1] === 'civ') {
             message.channel.send(message.member.nickname + " s'impose sur la scène mondiale, le laisserez vous faire ? "+ message.guild.roles.find('name','Civ'))
         }
-      //  
         if (args[1] === 'minecraft') {
             message.channel.send(message.member.nickname + ' ne veut pas miner seul. ' + message.guild.roles.find('name','Minecraft'))
         }
