@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const Command = require('./command')
 const jobController = require('../game/controller/controller')
 const fiche = require('../game/controller/FichePerso')
+const systemCombat = require('../game/controller/systemCombat')
 
 var fs = require('fs')
 var id
@@ -9,7 +10,7 @@ var bool = true
 module.exports = class Create extends Command{
 
     static match(message){
-        return message.content.startsWith('!fiche')||message.content.startsWith('!create')
+        return message.content.startsWith('!fiche')||message.content.startsWith('!create') || message.content.startsWith('!combat')
     }
 
     static action(message){
@@ -48,6 +49,10 @@ module.exports = class Create extends Command{
                 }
 
             });
+        }
+        if(message.content.startsWith('!combat')){
+            let test = new systemCombat
+            test.simulation(message)
         }
         
     }
