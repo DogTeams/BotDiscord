@@ -16,10 +16,21 @@ var myMagie
 var myResis
 var myCatégorie
 
+//const action
+const prefix = "combat"
+const action1 = "attaque"
+const action2 = "competences"
+const action3 = "fuir"
+
+//const catégories
+const catégories1 = "mage"
+const catégories2 = "combattant"
+const catégories3 = "tireur"
+
 module.exports = class systemCombat{
     simulation(message){
         if(debut){
-            message.channel.send("Ce combat est une simulation de ce que pourrais donner le bot a l'avenir ^^ `!combat` pour continuer")
+            message.channel.send("Ce combat est une simulation de ce que pourrais donner le bot a l'avenir ^^ `!" + prefix + "` pour continuer")
             id = message.author.id
             this.newJoueur(message)
             debut = false
@@ -27,76 +38,84 @@ module.exports = class systemCombat{
             ePv = 50
         }
         else if(!debut && id == message.author.id){
-            if(Tour){
-                tour +=1
-                switch(tour){
-                    case 1:
-                        message.channel.send("C'est votre tour. Vous avez plusieurs action disponible. `!combat attaque` `!combat competence` `!combat fuir`")
-                        this.de()
-                    break;
-                    case 2:
-                        this.action(message)
-                        tour = 1
-                        Tour = false
-                }
-            }
-            if(!Tour){
-                const min = Math.ceil(1)
-                const max = Math.floor(50)
-                var res = Math.floor(Math.random()*(max-min+1))+min
-                if(res<myDegat){
-                    ePv = ePv - myDegat
-                    message.channel.send("L'attaque à réussie. PV ennemie restant: "+ ePv)
-                }
-                else{
-                    message.channel.send("L'attaque à échouer. PV ennemie restant: "+ ePv)
-                }
-                if(ePv>0){
-                    var eDegat = Math.floor(Math.random()*(max-min+1))+min
-                    var myEsquive = Math.floor(Math.random()*(myResis-min+1))+min
-                    message.channel.send("L'ennemie attaque")
-                    if(myEsquive<eDegat){
-                        myPv = myPv - res
-                        message.channel.send("Tu reçoit un coup bien placer. Vos pv restant: "+myPv)
-                    }
-                    else{
-                        message.channel.send("Belle esquive. Vos pv restant: "+myPv)
-                    }
-                    message.channel.send("`!combat attaque` `!combat competence` `!combat fuir`")
+            tour +=1
+            switch(tour){
+                case 1:
+                    message.channel.send("C'est votre tour. Vous avez plusieurs action disponible. `!" + prefix + " " + action1 + "` `!" + prefix + " " + action2 + "` `!" + prefix + " " + action3 + "`")
                     this.de()
-                }
-                Tour = true
+                break;
+                case 2:
+                    this.action(message)
+                    
+                break;
             }
             if(ePv<=0 || myPv<=0){
                 message.channel.send("Fin du combat!!!")
                 debut = true
             }
         }
+        else if(id != message.author.id){
+            message.channel.send("Le système n'est pas encore prét à faire plusieurs combats à la fois merci d'attendre la fin de la simulation")
+        }
     }
 
     action(message){
         let args = message.content.split(' ')
         switch(args[1]){
-            case "attaque":
+            case action1:
                 message.channel.send("Vous attaquer: "+myDegat)
+                tour = 1
+                Tour = false
+                const min = Math.ceil(1)
+                const max = Math.floor(10)
+                var res = Math.floor(Math.random()*(50-min+1))+min
+                if(res<myDegat){
+                    ePv = ePv - myDegat
+                    message.channel.send("L'attaque à réussie. PV ennemie restant: "+ ePv)
+                }
+                else{
+                        message.channel.send("L'attaque à échouer. PV ennemie restant: "+ ePv)
+                }
+                if(ePv>0){
+                    var eDegat = Math.floor(Math.random()*(max-min+1))+min
+                    var myEsquive = Math.floor(Math.random()*(myResis-min+1))+min
+                    message.channel.send("L'ennemie attaque: " + eDegat)
+                    if(myEsquive<eDegat){
+                        myPv = myPv - eDegat
+                        message.channel.send("Tu reçoit un coup bien placer. Vos pv restant: "+myPv)
+                    }
+                    else{
+                        message.channel.send("Belle esquive. Vos pv restant: "+myPv)
+                    }
+                    if(myPv>0){
+                        message.channel.send("`!" + prefix + " " + action1 + "` `!" + prefix + " " + action2 + "` `!" + prefix + " " + action3 + "`")
+                    }
+                    this.de()
+                }
             break;
-            case "riposte":
+            case action2:
                 message.channel.send("pas encore disponible")
+                tour-=1 // a enlever quand dispo
             break;
-            case "fuir":
+            case action3:
                 message.channel.send("pas encore disponible")
+                tour-=1 // a enlever quand dispo
+            break;
+            default:
+                message.channel.send("Error: la commande entré est éroné. Réessaye\n`!" + prefix + " " + action1 + "` `!" + prefix + " " + action2 + "` `!" + prefix + " " + action3 + "`")
+                tour-=1
             break;
         }
     }
     de(){
         switch(myCatégorie){
-            case "mage":
+            case catégories1:
                 myDegat = Math.floor(Math.random()*(myMagie-1+1))+1
             break
-            case "combattant":
+            case catégories2:
                 myDegat = Math.floor(Math.random()*(myForce-1+1))+1
             break
-            case "tireur":
+            case catégories3:
                 myDegat = Math.floor(Math.random()*(myAgi-1+1))+1
             break
         }
